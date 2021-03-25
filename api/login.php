@@ -66,15 +66,31 @@ if($num > 0){
         echo json_encode(
             array(
                 "message" => "Successful login.",
-                "jwt" => $jwt,
+                "jwtToken" => $jwt,
                 "email" => $email,
-                "expireAt" => $expire_claim
+                "expireAt" => $expire_claim,
+                "hasError" => false
             ));
     }
     else{
-
-        http_response_code(401);
-        echo json_encode(array("message" => "Login failed.", "password" => $password));
+         echo json_encode(
+            array(
+                "message" => "Login failed.",
+                "jwtToken" => null,
+                "email" => null,
+                "expireAt" => null,
+                "hasError" => true
+            ));
     }
+}
+else{
+	echo json_encode(
+            array(
+                "message" => "Login failed",
+                "jwtToken" => null,
+                "email" => null,
+                "expireAt" => null,
+                "hasError" => true
+            ));
 }
 ?>

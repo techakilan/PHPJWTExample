@@ -18,8 +18,8 @@ $conn = $databaseService->getConnection();
 
 $data = json_decode(file_get_contents("php://input"));
 
-$firstName = $data->first_name;
-$lastName = $data->last_name;
+$firstName = $data->firstname;
+$lastName = $data->lastname;
 $email = $data->email;
 $password = $data->password;
 
@@ -37,7 +37,8 @@ $stmt->bindParam(':firstname', $firstName);
 $stmt->bindParam(':lastname', $lastName);
 $stmt->bindParam(':email', $email);
 
-$password_hash = password_hash($password, PASSWORD_BCRYPT);
+//$password_hash = password_hash($password, PASSWORD_BCRYPT);
+$password_hash = $password;
 
 $stmt->bindParam(':password', $password_hash);
 
@@ -45,12 +46,12 @@ $stmt->bindParam(':password', $password_hash);
 if($stmt->execute()){
 
     http_response_code(200);
-    echo json_encode(array("message" => "User was successfully registered."));
+    echo json_encode(array("message" => "User was successfully registered.","hasError"=>false));
 }
 else{
     http_response_code(400);
 
-    echo json_encode(array("message" => "Unable to register the user."));
+    echo json_encode(array("message" => "Unable to register the user.","hasError"=>true));
 }
 ?>
 
